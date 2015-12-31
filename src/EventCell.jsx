@@ -29,7 +29,7 @@ let EventCell = React.createClass({
     return (
       <div
         {...props}
-        style={Object.assign({...props.style, ...style}), dragging ? {} : {}}
+        style={Object.assign({...props.style, ...style}, dragging ? {zIndex: '6', position:'relative'} : {})}
         className={cn('rbc-event', className, xClassName, {
           'rbc-selected': selected,
           'rbc-event-allday': isAllDay || dates.diff(start, dates.ceil(end, 'day'), 'day') > 1,
@@ -37,7 +37,7 @@ let EventCell = React.createClass({
           'rbc-event-continues-after': continuesAfter
         })}
         draggable={true}
-        onDragStart={this.onDragStart.bind(this)}
+        onDragStart={this.onDragStart}
         onClick={()=> onSelect(event)}
       >
         <div className='rbc-event-content' title={title}>

@@ -5,13 +5,15 @@ import { segStyle } from './utils/eventLevels';
 import { notify } from './utils/helpers';
 import { dateCellSelection, slotWidth, getCellAtX, pointInBox } from './utils/selection';
 import Selection, { getBoundsForNode } from './Selection';
+import moment from 'moment'
 
 class DisplayCells extends React.Component {
 
   static propTypes = {
     selectable: React.PropTypes.bool,
     onSelect: React.PropTypes.func,
-    slots: React.PropTypes.number
+    slots: React.PropTypes.number,
+    rows: React.PropTypes.array
   }
 
   state = { selecting: false }
@@ -31,19 +33,24 @@ class DisplayCells extends React.Component {
     if (!nextProps.selectable && this.props.selectable)
       this._teardownSelectable();
   }
-  ondrop(e) {
+  ondrop(day, e) {
     e.preventDefault()
     const raw = e.dataTransfer.getData("event");
-    const data = JSON.parse(raw)
-    console.dir(data)
-    console.dir(this.props)
-    alert('drop')
+    const {event} = JSON.parse(raw)
+
+    const {start, end} = event
+    const diff = moment(end).diff(moment(start), 'days')
+
+    const newStart = moment(day)
+    const newEnd = moment(day).add(diff, 'days')
+
+    this.props.onEventDrop(event, newStart, newEnd)
   }
   ondragover(e) {
     e.preventDefault()
   }
   render(){
-    let { slots, dragging } = this.props;
+    let { slots, dragging, row } = this.props;
     let { selecting, startIdx, endIdx } = this.state
 
     let children = [];
@@ -52,9 +59,9 @@ class DisplayCells extends React.Component {
       children.push(
         <div
           key={'bg_' + i}
-          style={Object.assign(segStyle(1, slots), dragging ? {} : {})}
+          style={Object.assign(segStyle(1, slots), dragging ? {zIndex: "4"} : {})}
           onDragOver={this.ondragover}
-          onDrop={this.ondrop.bind(this)} 
+          onDrop={this.ondrop.bind(this, row && row[i] ? row[i] : null)} 
           className={cn('rbc-day-bg', {
             'rbc-selected-cell': selecting && i >= startIdx && i <= endIdx
           })}>

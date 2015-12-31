@@ -180,7 +180,6 @@ let MonthView = React.createClass({
 
   renderBackground(row, idx){
     let self = this;
-
     function onSelectSlot({ start, end }) {
       self._pendingSelection = self._pendingSelection
         .concat(row.slice(start, end + 1))
@@ -197,6 +196,8 @@ let MonthView = React.createClass({
       ref={r => this._bgRows[idx] = r}
       onSelectSlot={onSelectSlot}
       dragging={this.state.dragging}
+      onEventDrop={this.props.onEventDrop}
+      row={row}
     />
     )
   },

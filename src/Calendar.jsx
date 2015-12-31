@@ -358,6 +358,7 @@ let Calendar = React.createClass({
           onSelectEvent={this._select}
           onSelectSlot={this._selectSlot}
           onShowMore={this._showMore}
+          onEventDrop={this.props.onEventDrop}
         />
       </div>
     );
