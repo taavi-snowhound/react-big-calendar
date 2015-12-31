@@ -31,9 +31,19 @@ class DisplayCells extends React.Component {
     if (!nextProps.selectable && this.props.selectable)
       this._teardownSelectable();
   }
-
+  ondrop(e) {
+    e.preventDefault()
+    const raw = e.dataTransfer.getData("event");
+    const data = JSON.parse(raw)
+    console.dir(data)
+    console.dir(this.props)
+    alert('drop')
+  }
+  ondragover(e) {
+    e.preventDefault()
+  }
   render(){
-    let { slots } = this.props;
+    let { slots, dragging } = this.props;
     let { selecting, startIdx, endIdx } = this.state
 
     let children = [];
@@ -42,11 +52,14 @@ class DisplayCells extends React.Component {
       children.push(
         <div
           key={'bg_' + i}
-          style={segStyle(1, slots)}
+          style={Object.assign(segStyle(1, slots), dragging ? {} : {})}
+          onDragOver={this.ondragover}
+          onDrop={this.ondrop.bind(this)} 
           className={cn('rbc-day-bg', {
             'rbc-selected-cell': selecting && i >= startIdx && i <= endIdx
-          })}
-        />
+          })}>
+
+        </div>
       )
     }
 

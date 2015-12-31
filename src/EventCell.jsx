@@ -4,11 +4,15 @@ import dates from './utils/dates';
 import { accessor as get } from './utils/accessors';
 
 let EventCell = React.createClass({
+  onDragStart(e) {
+    e.dataTransfer.setData("event", JSON.stringify(this.props));
+    this.props.onDragStart()
+  },
   render() {
     let {
         className, event, selected, eventPropGetter
       , startAccessor, endAccessor, titleAccessor
-      , slotStart, slotEnd, onSelect, component, ...props } = this.props;
+      , slotStart, slotEnd, onSelect, component, dragging, ...props } = this.props;
 
     let Component = component;
 
@@ -25,13 +29,15 @@ let EventCell = React.createClass({
     return (
       <div
         {...props}
-        style={{...props.style, ...style}}
+        style={Object.assign({...props.style, ...style}), dragging ? {} : {}}
         className={cn('rbc-event', className, xClassName, {
           'rbc-selected': selected,
           'rbc-event-allday': isAllDay || dates.diff(start, dates.ceil(end, 'day'), 'day') > 1,
           'rbc-event-continues-prior': continuesPrior,
           'rbc-event-continues-after': continuesAfter
         })}
+        draggable={true}
+        onDragStart={this.onDragStart.bind(this)}
         onClick={()=> onSelect(event)}
       >
         <div className='rbc-event-content' title={title}>

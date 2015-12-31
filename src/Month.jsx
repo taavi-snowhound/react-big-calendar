@@ -65,7 +65,8 @@ let MonthView = React.createClass({
   getInitialState(){
     return {
       rowLimit: 5,
-      needLimitMeasure: true
+      needLimitMeasure: true,
+      dragging: false
     }
   },
 
@@ -195,6 +196,7 @@ let MonthView = React.createClass({
       slots={7}
       ref={r => this._bgRows[idx] = r}
       onSelectSlot={onSelectSlot}
+      dragging={this.state.dragging}
     />
     )
   },
@@ -212,6 +214,8 @@ let MonthView = React.createClass({
         segments={segments}
         start={first}
         end={last}
+        onDragStart={this._onDragStart}
+        dragging={this.state.dragging}
       />
     )
   },
@@ -256,7 +260,10 @@ let MonthView = React.createClass({
       )
     })
   },
-
+  _onDragStart() {
+    console.dir("drag start")
+    this.setState({dragging: true})
+  },
   _headers(row, format, culture){
     let first = row[0]
     let last = row[row.length - 1]

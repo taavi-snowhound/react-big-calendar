@@ -36,7 +36,7 @@ export default {
     let {
         eventPropGetter, selected, start, end
       , startAccessor, endAccessor, titleAccessor
-      , allDayAccessor, eventComponent, onSelect } = this.props;
+      , allDayAccessor, eventComponent, onSelect, onDragStart, dragging } = this.props;
 
     return (
       <EventCell
@@ -51,6 +51,8 @@ export default {
         slotStart={start}
         slotEnd={end}
         component={eventComponent}
+        onDragStart={onDragStart}
+        dragging={dragging}
       />
     )
   },
