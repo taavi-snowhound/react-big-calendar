@@ -16,7 +16,7 @@ class DisplayCells extends React.Component {
     rows: React.PropTypes.array
   }
 
-  state = { selecting: false }
+  state = { selecting: false, dragging: false }
 
   componentDidMount(){
     this.props.selectable
@@ -35,6 +35,8 @@ class DisplayCells extends React.Component {
   }
   ondrop(day, e) {
     e.preventDefault()
+    this.setState({dragging: false})
+    
     const raw = e.dataTransfer.getData("event");
     const {event} = JSON.parse(raw)
 
@@ -44,14 +46,26 @@ class DisplayCells extends React.Component {
     const newStart = moment(day)
     const newEnd = moment(day).add(diff, 'days')
 
+    newStart.hour(moment(start).hour())
+    newStart.minute(moment(start).minute())
+    newStart.second(moment(start).second())
+
+    newEnd.hour(moment(end).hour())
+    newEnd.minute(moment(end).minute())
+    newEnd.second(moment(end).second())    
+
     this.props.onEventDrop(event, newStart, newEnd)
   }
   ondragover(e) {
     e.preventDefault()
+    this.setState({dragging: true})
+  }
+  ondragleave(e) {
+    this.setState({dragging: false})
   }
   render(){
-    let { slots, dragging, row } = this.props;
-    let { selecting, startIdx, endIdx } = this.state
+    let { slots, row } = this.props;
+    let { selecting, startIdx, endIdx, dragging } = this.state
 
     let children = [];
 
@@ -59,12 +73,18 @@ class DisplayCells extends React.Component {
       children.push(
         <div
           key={'bg_' + i}
-          style={Object.assign(segStyle(1, slots), dragging ? {zIndex: "4"} : {})}
-          onDragOver={this.ondragover}
-          onDrop={this.ondrop.bind(this, row && row[i] ? row[i] : null)} 
+          style={Object.assign(segStyle(1, slots), dragging ? {zIndex: "5"} : {})}
           className={cn('rbc-day-bg', {
             'rbc-selected-cell': selecting && i >= startIdx && i <= endIdx
           })}>
+          <div
+          style={{height:"100%", zIndex:"8"}}
+          onDragOver={this.ondragover.bind(this)}
+          dragLeave={this.ondragleave.bind(this)}
+          onDrop={this.ondrop.bind(this, row && row[i] ? row[i] : null)} 
+          >
+
+          </div>
 
         </div>
       )

@@ -8,8 +8,8 @@ let Basic = React.createClass({
   },
   onEventDrop(event, start, end) {
     console.dir(event)
-    console.dir(events)
 
+    console.log(start.format('MM/DD/YYYY HH:mm:ss'), end.format('MM/DD/YYYY HH:mm:ss'))
     let newEvents = Object.assign([], this.state.events)
 
     newEvents = newEvents.map((v) => {
@@ -20,7 +20,6 @@ let Basic = React.createClass({
       return v
     })
 
-    console.dir(newEvents)
 
     this.setState({events: newEvents})
 
