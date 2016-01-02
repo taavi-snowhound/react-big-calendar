@@ -53,6 +53,7 @@ class Popup extends React.Component {
               event={event}
               component={eventComponent}
               selected={isSelected(event, selected)}
+              dragStart={dragStart}
             />
           )
         }

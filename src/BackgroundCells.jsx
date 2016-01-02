@@ -16,7 +16,7 @@ class DisplayCells extends React.Component {
     rows: React.PropTypes.array
   }
 
-  state = { selecting: false, dragging: false }
+  state = { selecting: false }
 
   componentDidMount(){
     this.props.selectable
@@ -35,7 +35,6 @@ class DisplayCells extends React.Component {
   }
   ondrop(day, e) {
     e.preventDefault()
-    this.setState({dragging: false})
     
     const raw = e.dataTransfer.getData("event");
     const {event} = JSON.parse(raw)
@@ -58,14 +57,10 @@ class DisplayCells extends React.Component {
   }
   ondragover(e) {
     e.preventDefault()
-    this.setState({dragging: true})
-  }
-  ondragleave(e) {
-    this.setState({dragging: false})
   }
   render(){
-    let { slots, row } = this.props;
-    let { selecting, startIdx, endIdx, dragging } = this.state
+    let { slots, row, dragging } = this.props;
+    let { selecting, startIdx, endIdx } = this.state
 
     let children = [];
 
@@ -73,18 +68,13 @@ class DisplayCells extends React.Component {
       children.push(
         <div
           key={'bg_' + i}
-          style={Object.assign(segStyle(1, slots), dragging ? {zIndex: "5"} : {})}
+          style={Object.assign(segStyle(1, slots), dragging ? {zIndex: "8"} : {})}
           className={cn('rbc-day-bg', {
             'rbc-selected-cell': selecting && i >= startIdx && i <= endIdx
-          })}>
-          <div
-          style={{height:"100%", zIndex:"8"}}
+          })}
           onDragOver={this.ondragover.bind(this)}
-          dragLeave={this.ondragleave.bind(this)}
-          onDrop={this.ondrop.bind(this, row && row[i] ? row[i] : null)} 
-          >
+          onDrop={this.ondrop.bind(this, row && row[i] ? row[i] : null)} >
 
-          </div>
 
         </div>
       )

@@ -65,7 +65,8 @@ let MonthView = React.createClass({
   getInitialState(){
     return {
       rowLimit: 5,
-      needLimitMeasure: true
+      needLimitMeasure: true,
+      dragging: false
     }
   },
 
@@ -194,12 +195,12 @@ let MonthView = React.createClass({
       slots={7}
       ref={r => this._bgRows[idx] = r}
       onSelectSlot={onSelectSlot}
-      onEventDrop={this.props.onEventDrop}
+      onEventDrop={this._onEventDrop}
       row={row}
+      dragging={this.state.dragging}
     />
     )
   },
-
   renderRowLevel(segments, week, idx){
     let first = week[0]
     let last = week[week.length - 1]
@@ -213,11 +214,10 @@ let MonthView = React.createClass({
         segments={segments}
         start={first}
         end={last}
-        onDragStart={this._onDragStart}
+        dragStart={this._dragStart}
       />
     )
   },
-
   renderShowMore(segments, extraSegments, week, weekIdx) {
     let first = week[0]
     let last = week[week.length - 1]
@@ -234,8 +234,20 @@ let MonthView = React.createClass({
         segments={extraSegments}
         start={first}
         end={last}
+        dragStart={this._dragStart}
       />
     )
+  },
+
+  _onEventDrop(event, newStart, newEnd) {
+    this.setState({dragging: false})
+    this.props.onEventDrop(event, newStart, newEnd)
+  },
+
+  _dragStart() {
+    setTimeout(() => {
+      this.setState({dragging: true})
+    }, 100)
   },
 
   _dates(row){
@@ -305,6 +317,7 @@ let MonthView = React.createClass({
           slotStart={overlay.date}
           slotEnd={overlay.end}
           onSelect={this._selectEvent}
+          dragStart={this._dragStart}
         />
       </Overlay>
     )
