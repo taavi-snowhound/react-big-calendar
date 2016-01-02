@@ -215,6 +215,7 @@ let MonthView = React.createClass({
         start={first}
         end={last}
         dragStart={this._dragStart}
+        dragEnd={this._dragEnd}
       />
     )
   },
@@ -235,6 +236,7 @@ let MonthView = React.createClass({
         start={first}
         end={last}
         dragStart={this._dragStart}
+        dragEnd={this._dragEnd}
       />
     )
   },
@@ -243,11 +245,11 @@ let MonthView = React.createClass({
     this.setState({dragging: false})
     this.props.onEventDrop(event, newStart, newEnd)
   },
-
   _dragStart() {
-    setTimeout(() => {
-      this.setState({dragging: true})
-    }, 100)
+    this.setState({dragging: true})
+  },
+  _dragEnd() {
+    this.setState({dragging: false})
   },
 
   _dates(row){

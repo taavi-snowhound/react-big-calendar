@@ -45,6 +45,10 @@ let TimeGrid = React.createClass({
     }
   },
 
+  getInitialState() {
+    return {dragging: false}
+  },
+
   componentWillMount() {
     this._gutters = [];
   },
@@ -109,6 +113,9 @@ let TimeGrid = React.createClass({
                 slots={range.length}
                 container={()=> this.refs.allDay}
                 selectable={this.props.selectable}
+                dragging={this.state.dragging}
+                onEventDrop={this._onEventDrop}
+                row={range}
               />
               <div style={{ zIndex: 1, position: 'relative' }}>
                 { this.renderAllDayEvents(range, levels) }
@@ -173,10 +180,21 @@ let TimeGrid = React.createClass({
         segments={segs}
         start={first}
         end={last}
+        dragStart={this._onDragStart}
+        dragEnd={this._onDragEnd}
       />
     )
   },
-
+  _onDragStart() {
+    this.setState({dragging: true})
+  },
+  _onDragEnd() {
+    this.setState({dragging: false})
+  },
+  _onEventDrop(event, newStart, newEnd) {
+    this.setState({dragging: false})
+    this.props.onEventDrop(event, newStart, newEnd)
+  },
   renderHeader(range){
     let { dayFormat, culture } = this.props;
 

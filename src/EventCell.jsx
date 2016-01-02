@@ -6,7 +6,12 @@ import { accessor as get } from './utils/accessors';
 let EventCell = React.createClass({
   onDragStart(e) {
     e.dataTransfer.setData("event", JSON.stringify(this.props));
-    this.props.dragStart()
+    setTimeout(() => {
+      this.props.dragStart()
+    }, 100)
+  },
+  onDragEnd(e) {
+    this.props.dragEnd()
   },
   render() {
     let {
@@ -38,6 +43,7 @@ let EventCell = React.createClass({
         })}
         draggable={true}
         onDragStart={this.onDragStart}
+        onDragEnd={this.onDragEnd}
         onClick={()=> onSelect(event)}
       >
         <div className='rbc-event-content' title={title}>
