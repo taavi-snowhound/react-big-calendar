@@ -81,18 +81,11 @@ let DaySlot = React.createClass({
     const {event} = JSON.parse(raw)
 
     const {start, end} = event
-    const diff = moment(end).diff(moment(start), 'days')
+
+    const diff = moment(end).diff(moment(start))
 
     const newStart = moment(day)
-    const newEnd = moment(day).add(diff, 'days')
-
-    newStart.hour(moment(start).hour())
-    newStart.minute(moment(start).minute())
-    newStart.second(moment(start).second())
-
-    newEnd.hour(moment(end).hour())
-    newEnd.minute(moment(end).minute())
-    newEnd.second(moment(end).second())    
+    const newEnd = moment(day).add(diff)
 
     this.props.onEventDrop(event, newStart, newEnd, false)
   },
@@ -108,7 +101,7 @@ let DaySlot = React.createClass({
     let numSlots = Math.ceil(totalMin / step)
     let children = [];
 
-    let date = min
+    let date = new Date(min.getTime())
 
     for (var i = 0; i < numSlots; i++) {
       date = dates.add(date, step, 'minutes');

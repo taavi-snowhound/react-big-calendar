@@ -39,20 +39,32 @@ class DisplayCells extends React.Component {
     const {event} = JSON.parse(raw)
 
     const {start, end} = event
-    const diff = moment(end).diff(moment(start), 'days')
+
+    const diff = moment(end).diff(moment(start))
 
     const newStart = moment(day)
-    const newEnd = moment(day).add(diff, 'days')
-
-    newStart.hour(moment(start).hour())
-    newStart.minute(moment(start).minute())
-    newStart.second(moment(start).second())
-
-    newEnd.hour(moment(end).hour())
-    newEnd.minute(moment(end).minute())
-    newEnd.second(moment(end).second())    
+    const newEnd = moment(day).add(diff)
 
     this.props.onEventDrop(event, newStart, newEnd)
+    // e.preventDefault()
+    // const raw = e.dataTransfer.getData("event");
+    // const {event} = JSON.parse(raw)
+
+    // const {start, end} = event
+    // const diff = moment(end).diff(moment(start), 'days')
+
+    // const newStart = moment(day)
+    // const newEnd = moment(day).add(diff, 'days')
+
+    // newStart.hour(moment(start).hour())
+    // newStart.minute(moment(start).minute())
+    // newStart.second(moment(start).second())
+
+    // newEnd.hour(moment(end).hour())
+    // newEnd.minute(moment(end).minute())
+    // newEnd.second(moment(end).second())    
+
+    // this.props.onEventDrop(event, newStart, newEnd)
   }
   ondragover(e) {
     e.preventDefault()
