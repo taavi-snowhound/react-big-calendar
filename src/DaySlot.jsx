@@ -91,10 +91,9 @@ let DaySlot = React.createClass({
     const {event} = JSON.parse(raw)
 
     const {start, end} = event
+    const newStart = moment(day)
 
     const diff = moment(end).diff(moment(start))
-
-    const newStart = moment(day)
     const newEnd = moment(day).add(diff)
 
     this.props.onEventDrop(event, newStart.toDate(), newEnd.toDate(), false)
@@ -152,7 +151,7 @@ let DaySlot = React.createClass({
     let {
         events, step, min, culture, eventPropGetter
       , selected, eventTimeRangeFormat, eventComponent
-      , startAccessor, endAccessor, titleAccessor } = this.props;
+      , startAccessor, endAccessor, titleAccessor, draggable } = this.props;
 
     let EventComponent = eventComponent
       , lastLeftOffset = 0;
@@ -182,7 +181,7 @@ let DaySlot = React.createClass({
           key={'evt_' + idx}
           style={{...xStyle, ...style}}
           title={label + ': ' + title }
-          draggable={true}
+          draggable={draggable}
           onDragStart={this.onDragStart.bind(this, event)}
           onDragEnd={this.onDragEnd}
           onClick={this._select.bind(null, event)}

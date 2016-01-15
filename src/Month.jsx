@@ -242,7 +242,6 @@ let MonthView = React.createClass({
   },
 
   _onEventDrop(event, newStart, newEnd, allDay) {
-    console.log('allday', allDay)
     this.setState({dragging: false})
     this.props.onEventDrop(event, newStart, newEnd, allDay)
   },

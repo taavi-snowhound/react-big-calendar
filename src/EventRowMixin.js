@@ -36,7 +36,7 @@ export default {
     let {
         eventPropGetter, selected, start, end
       , startAccessor, endAccessor, titleAccessor
-      , allDayAccessor, eventComponent, onSelect, dragStart, dragEnd } = this.props;
+      , allDayAccessor, eventComponent, onSelect, dragStart, dragEnd, draggable } = this.props;
 
     return (
       <EventCell
@@ -53,6 +53,7 @@ export default {
         component={eventComponent}
         dragStart={dragStart}
         dragEnd={dragEnd}
+        draggable={draggable}
       />
     )
   },

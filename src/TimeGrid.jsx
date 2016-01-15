@@ -134,7 +134,7 @@ let TimeGrid = React.createClass({
   },
 
   renderEvents(range, events){
-    let { min, max, endAccessor, startAccessor, components } = this.props;
+    let { min, max, endAccessor, startAccessor, components, draggable } = this.props;
     let today = new Date();
 
     return range.map((date, idx) => {
@@ -157,6 +157,7 @@ let TimeGrid = React.createClass({
           events={daysEvents}
           dragStart={this._onDragStart}
           dragEnd={this._onDragEnd}
+          draggable={draggable}
         />
       )
     })
@@ -184,6 +185,7 @@ let TimeGrid = React.createClass({
         end={last}
         dragStart={this._onDragStart}
         dragEnd={this._onDragEnd}
+        draggable={this.props.draggable}
       />
     )
   },

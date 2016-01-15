@@ -17,7 +17,8 @@ let EventCell = React.createClass({
     let {
         className, event, selected, eventPropGetter
       , startAccessor, endAccessor, titleAccessor
-      , slotStart, slotEnd, onSelect, component, ...props } = this.props;
+      , slotStart, slotEnd, onSelect, component, draggable, ...props } = this.props;
+
 
     let Component = component;
 
@@ -41,7 +42,7 @@ let EventCell = React.createClass({
           'rbc-event-continues-prior': continuesPrior,
           'rbc-event-continues-after': continuesAfter
         })}
-        draggable={true}
+        draggable={draggable}
         onDragStart={this.onDragStart}
         onDragEnd={this.onDragEnd}
         onClick={()=> onSelect(event)}
