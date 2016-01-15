@@ -5,7 +5,7 @@ import cn from 'classnames';
 import dates from './utils/dates';
 import { isSelected } from './utils/selection';
 import localizer from './localizer'
-
+import moment from 'moment'
 import { notify } from './utils/helpers';
 import { accessor } from './utils/propTypes';
 import { accessor as get } from './utils/accessors';
@@ -75,7 +75,30 @@ let DaySlot = React.createClass({
     if (!nextProps.selectable && this.props.selectable)
       this._teardownSelectable();
   },
+  ondrop(day, e) {
+    e.preventDefault()
+    const raw = e.dataTransfer.getData("event");
+    const {event} = JSON.parse(raw)
 
+    const {start, end} = event
+    const diff = moment(end).diff(moment(start), 'days')
+
+    const newStart = moment(day)
+    const newEnd = moment(day).add(diff, 'days')
+
+    newStart.hour(moment(start).hour())
+    newStart.minute(moment(start).minute())
+    newStart.second(moment(start).second())
+
+    newEnd.hour(moment(end).hour())
+    newEnd.minute(moment(end).minute())
+    newEnd.second(moment(end).second())    
+
+    this.props.onEventDrop(event, newStart, newEnd, false)
+  },
+  ondragover(e) {
+    e.preventDefault()
+  },
   render() {
     let {
         min, max, step, start, end
@@ -85,9 +108,14 @@ let DaySlot = React.createClass({
     let numSlots = Math.ceil(totalMin / step)
     let children = [];
 
+    let date = min
+
     for (var i = 0; i < numSlots; i++) {
+      date = dates.add(date, step, 'minutes');
       children.push(
-        <div key={i} className='rbc-time-slot'/>
+        <div key={i} className='rbc-time-slot'
+          onDragOver={this.ondragover}
+          onDrop={this.ondrop.bind(this, date)}/>
       )
     }
 
