@@ -36,7 +36,7 @@ class DisplayCells extends React.Component {
   ondrop(day, e) {
     e.preventDefault()
     const raw = e.dataTransfer.getData("event");
-    const {event} = JSON.parse(raw)
+    const {event, dayView} = JSON.parse(raw)
 
     const {start, end} = event
 
@@ -45,9 +45,9 @@ class DisplayCells extends React.Component {
     const newStart = moment(day)
     const newEnd = moment(day).add(diff)
 
-    console.dir(event)
+    const allDay = dayView === true ? true : event.allDay
 
-    this.props.onEventDrop(event, newStart.toDate(), newEnd.toDate(), event.allDay)
+    this.props.onEventDrop(event, newStart.toDate(), newEnd.toDate(), allDay ? allDay : false)
   }
   ondragover(e) {
     e.preventDefault()

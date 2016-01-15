@@ -155,6 +155,8 @@ let TimeGrid = React.createClass({
           key={idx}
           date={date}
           events={daysEvents}
+          dragStart={this._onDragStart}
+          dragEnd={this._onDragEnd}
         />
       )
     })
@@ -191,9 +193,9 @@ let TimeGrid = React.createClass({
   _onDragEnd() {
     this.setState({dragging: false})
   },
-  _onEventDrop(event, newStart, newEnd) {
+  _onEventDrop(event, newStart, newEnd, allDay) {
     this.setState({dragging: false})
-    this.props.onEventDrop(event, newStart, newEnd)
+    this.props.onEventDrop(event, newStart, newEnd, allDay)
   },
   renderHeader(range){
     let { dayFormat, culture } = this.props;

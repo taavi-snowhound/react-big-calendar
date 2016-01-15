@@ -60,7 +60,14 @@ let DaySlot = React.createClass({
   },
 
   onDragStart(event, e) {
-    e.dataTransfer.setData("event", JSON.stringify({event}));
+    e.dataTransfer.setData("event", JSON.stringify({event, dayView: true}));
+    setTimeout(() => {
+      this.props.dragStart()
+    }, 100)
+  },
+  
+  onDragEnd(e) {
+    this.props.dragEnd()
   },
 
   componentDidMount() {
@@ -177,6 +184,7 @@ let DaySlot = React.createClass({
           title={label + ': ' + title }
           draggable={true}
           onDragStart={this.onDragStart.bind(this, event)}
+          onDragEnd={this.onDragEnd}
           onClick={this._select.bind(null, event)}
           className={cn('rbc-event', className, {
             'rbc-selected': _isSelected,
