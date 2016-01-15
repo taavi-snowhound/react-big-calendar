@@ -59,6 +59,9 @@ let DaySlot = React.createClass({
     return { selecting: false };
   },
 
+  onDragStart(event, e) {
+    e.dataTransfer.setData("event", JSON.stringify({event}));
+  },
 
   componentDidMount() {
     this.props.selectable
@@ -87,7 +90,7 @@ let DaySlot = React.createClass({
     const newStart = moment(day)
     const newEnd = moment(day).add(diff)
 
-    this.props.onEventDrop(event, newStart, newEnd, false)
+    this.props.onEventDrop(event, newStart.toDate(), newEnd.toDate(), false)
   },
   ondragover(e) {
     e.preventDefault()
@@ -104,12 +107,12 @@ let DaySlot = React.createClass({
     let date = new Date(min.getTime())
 
     for (var i = 0; i < numSlots; i++) {
-      date = dates.add(date, step, 'minutes');
       children.push(
         <div key={i} className='rbc-time-slot'
           onDragOver={this.ondragover}
           onDrop={this.ondrop.bind(this, date)}/>
       )
+      date = dates.add(date, step, 'minutes');
     }
 
     this._totalMin = totalMin;
@@ -172,6 +175,8 @@ let DaySlot = React.createClass({
           key={'evt_' + idx}
           style={{...xStyle, ...style}}
           title={label + ': ' + title }
+          draggable={true}
+          onDragStart={this.onDragStart.bind(this, event)}
           onClick={this._select.bind(null, event)}
           className={cn('rbc-event', className, {
             'rbc-selected': _isSelected,
