@@ -57,7 +57,7 @@ let TimeGrid = React.createClass({
     this._adjustGutter()
   },
 
-  componentDidUpdate() {
+  componentDidUpdate(prevProps, prevState) {
     // this._adjustGutter()
   },
 
@@ -155,6 +155,7 @@ let TimeGrid = React.createClass({
           key={idx}
           date={date}
           events={daysEvents}
+          onEventDrop={this._onEventDrop}
           dragStart={this._onDragStart}
           dragEnd={this._onDragEnd}
           draggable={draggable}
