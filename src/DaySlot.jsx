@@ -60,7 +60,7 @@ let DaySlot = React.createClass({
   },
 
   onDragStart(event, e) {
-    e.dataTransfer.setData("event", JSON.stringify({event, dayView: true}));
+    e.dataTransfer.setData("text", JSON.stringify({event, dayView: true}));
     setTimeout(() => {
       this.props.dragStart()
     }, 100)
@@ -87,7 +87,7 @@ let DaySlot = React.createClass({
   },
   ondrop(day, e) {
     e.preventDefault()
-    const raw = e.dataTransfer.getData("event");
+    const raw = e.dataTransfer.getData("text");
     const {event} = JSON.parse(raw)
 
     const {start, end} = event

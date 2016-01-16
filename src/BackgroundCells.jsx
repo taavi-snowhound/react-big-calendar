@@ -35,7 +35,7 @@ class DisplayCells extends React.Component {
   }
   ondrop(day, e) {
     e.preventDefault()
-    const raw = e.dataTransfer.getData("event");
+    const raw = e.dataTransfer.getData("text");
     const {event, dayView} = JSON.parse(raw)
 
     const {start, end} = event

@@ -5,7 +5,7 @@ import { accessor as get } from './utils/accessors';
 
 let EventCell = React.createClass({
   onDragStart(e) {
-    e.dataTransfer.setData("event", JSON.stringify(this.props));
+    e.dataTransfer.setData("text", JSON.stringify(this.props));
     setTimeout(() => {
       this.props.dragStart()
     }, 100)
