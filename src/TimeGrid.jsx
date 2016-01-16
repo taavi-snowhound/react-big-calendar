@@ -58,7 +58,7 @@ let TimeGrid = React.createClass({
   },
 
   componentDidUpdate() {
-    this._adjustGutter()
+    // this._adjustGutter()
   },
 
   render() {
