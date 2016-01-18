@@ -191,7 +191,8 @@ let TimeGrid = React.createClass({
     )
   },
   _onDragStart() {
-    this.setState({dragging: true})
+    this.props.onDragStart ? this.props.onDragStart(event) : null
+    setTimeout(() => {this.setState({dragging: true})})             // allows dragging event to register before triggering re-render
   },
   _onDragEnd() {
     this.setState({dragging: false})

@@ -214,8 +214,8 @@ let MonthView = React.createClass({
         segments={segments}
         start={first}
         end={last}
-        dragStart={this._dragStart}
-        dragEnd={this._dragEnd}
+        dragStart={this._onDragStart}
+        dragEnd={this._onDragEnd}
       />
     )
   },
@@ -235,8 +235,8 @@ let MonthView = React.createClass({
         segments={extraSegments}
         start={first}
         end={last}
-        dragStart={this._dragStart}
-        dragEnd={this._dragEnd}
+        dragStart={this._onDragStart}
+        dragEnd={this._onDragEnd}
       />
     )
   },
@@ -245,10 +245,11 @@ let MonthView = React.createClass({
     this.setState({dragging: false})
     this.props.onEventDrop(event, newStart, newEnd, allDay)
   },
-  _dragStart() {
-    this.setState({dragging: true})
+  _onDragStart(event) {
+    this.props.onDragStart ? this.props.onDragStart(event) : null
+    setTimeout(() => {this.setState({dragging: true})})             // allows dragging event to register before triggering re-render
   },
-  _dragEnd() {
+  _onDragEnd() {
     this.setState({dragging: false})
   },
 
@@ -319,7 +320,7 @@ let MonthView = React.createClass({
           slotStart={overlay.date}
           slotEnd={overlay.end}
           onSelect={this._selectEvent}
-          dragStart={this._dragStart}
+          dragStart={this._onDragStart}
         />
       </Overlay>
     )

@@ -5,13 +5,18 @@ import { accessor as get } from './utils/accessors';
 
 let EventCell = React.createClass({
   onDragStart(e) {
-    e.dataTransfer.setData("text", JSON.stringify(this.props));
-    setTimeout(() => {
-      this.props.dragStart()
-    }, 100)
+    const {event} = this.props
+    e.dataTransfer.setData("text", JSON.stringify({event}));
+    this.props.dragStart(event)
   },
   onDragEnd(e) {
     this.props.dragEnd()
+  },
+  isDraggable(draggable, event) {
+    if(draggable instanceof Function) {
+      return draggable(event)
+    }
+    return draggable
   },
   render() {
     let {
@@ -42,7 +47,7 @@ let EventCell = React.createClass({
           'rbc-event-continues-prior': continuesPrior,
           'rbc-event-continues-after': continuesAfter
         })}
-        draggable={draggable}
+        draggable={this.isDraggable(draggable, event)}
         onDragStart={this.onDragStart}
         onDragEnd={this.onDragEnd}
         onClick={()=> onSelect(event)}

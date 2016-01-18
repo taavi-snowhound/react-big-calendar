@@ -58,18 +58,6 @@ let DaySlot = React.createClass({
   getInitialState() {
     return { selecting: false };
   },
-
-  onDragStart(event, e) {
-    e.dataTransfer.setData("text", JSON.stringify({event, dayView: true}));
-    setTimeout(() => {
-      this.props.dragStart()
-    }, 100)
-  },
-  
-  onDragEnd(e) {
-    this.props.dragEnd()
-  },
-
   componentDidMount() {
     this.props.selectable
       && this._selectable()
@@ -84,6 +72,14 @@ let DaySlot = React.createClass({
       this._selectable();
     if (!nextProps.selectable && this.props.selectable)
       this._teardownSelectable();
+  },
+  onDragStart(event, e) {
+    e.dataTransfer.setData("text", JSON.stringify({event, dayView: true}));
+    this.props.dragStart(event)
+  },
+  
+  onDragEnd(e) {
+    this.props.dragEnd()
   },
   ondrop(day, e) {
     e.preventDefault()
@@ -100,6 +96,12 @@ let DaySlot = React.createClass({
   },
   ondragover(e) {
     e.preventDefault()
+  },
+  isDraggable(draggable, event) {
+    if(draggable instanceof Function) {
+      return draggable(event)
+    }
+    return draggable
   },
   render() {
     let {
@@ -181,7 +183,7 @@ let DaySlot = React.createClass({
           key={'evt_' + idx}
           style={{...xStyle, ...style}}
           title={label + ': ' + title }
-          draggable={draggable}
+          draggable={this.isDraggable(draggable, event)}
           onDragStart={this.onDragStart.bind(this, event)}
           onDragEnd={this.onDragEnd}
           onClick={this._select.bind(null, event)}
