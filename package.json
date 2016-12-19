@@ -6,6 +6,7 @@
   "repository": "jquense/react-big-calendar",
   "license": "MIT",
   "main": "lib/index.js",
+  "style": "lib/css/react-big-calendar.css",
   "files": [
     "lib/",
     "LICENSE",
@@ -35,8 +36,8 @@
     "release": "release"
   },
   "peerDependencies": {
-    "react": "^0.14.0-beta1",
-    "react-dom": "^0.14.0-beta3"
+    "react": "^0.14.0 || ^15.0.0",
+    "react-dom": "^0.14.0 || ^15.0.0"
   },
   "devDependencies": {
     "markdown-jsx-loader": "^1.0.0",
